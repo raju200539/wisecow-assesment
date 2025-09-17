@@ -6,9 +6,11 @@ FROM debian:bookworm-slim
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install necessary packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    bash fortune-mod cowsay netcat-traditional ca-certificates \
- && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    fortune-mod \
+    cowsay \
+    netcat-openbsd \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set up the application
 WORKDIR /app
