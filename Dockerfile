@@ -14,13 +14,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # Copy the run script into the container
-COPY run.sh .
+COPY wisecow.sh .
 
 # Make the script executable
-RUN chmod +x run.sh
+RUN chmod +x wisecow.sh
 
 # Expose the application port
 EXPOSE 4499
 
 # Start the application
-CMD ["./run.sh"]
+CMD ["./wisecow.sh"]
