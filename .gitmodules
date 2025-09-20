@@ -1,0 +1,3 @@
+[submodule "wisecow"]
+	path = wisecow
+	url = https://github.com/raju200539/wisecow.git
