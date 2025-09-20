@@ -1,0 +1,45 @@
+apiVersion: security.kubearmor.com/v1
+kind: KubeArmorPolicy
+metadata:
+  # The name of our security policy
+  name: wisecow-zerotrust-policy
+  # It's good practice to apply it to the same namespace as your app
+  namespace: default
+spec:
+  # This section defines the severity and action of the policy
+  severity: 5
+  action: Block # This is the key to zero-trust: block by default
+
+  # This selector targets the pods to which the policy will be applied.
+  # It must match the labels on your wisecow deployment.
+  selector:
+    matchLabels:
+      app: wisecow
+
+  # --- Allowlist for Processes ---
+  # Only the binaries listed here will be allowed to execute.
+  process:
+    matchPaths:
+    - path: /bin/bash
+    - path: /usr/local/bin/wisecow.sh
+    - path: /usr/bin/mkfifo
+    - path: /bin/rm
+    - path: /bin/cat
+    - path: /bin/nc
+    - path: /bin/sleep
+    - path: /usr/games/cowsay
+    - path: /usr/games/fortune
+    # Other utilities that might be called by the above programs
+    - path: /usr/bin/head
+    - path: /usr/bin/nproc
+    - path: /usr/bin/sort
+    - path: /usr/bin/tail
+    - path: /usr/bin/tr
+
+  # --- Allowlist for Network Activity ---
+  # Allow the application to listen for incoming TCP connections.
+  network:
+    matchProtocols:
+    - protocol: tcp
+      fromSource:
+        - path: /bin/nc # Only allow netcat to perform this action
