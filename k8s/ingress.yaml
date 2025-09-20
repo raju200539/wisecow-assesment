@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wisecow-ingress
+  annotations:
+    # Tell cert-manager to use our self-signed issuer
+    cert-manager.io/cluster-issuer: "self-signed-issuer"
+spec:
+  tls:
+  - hosts:
+      - wisecow.local
+    # cert-manager will create and populate this secret
+    secretName: wisecow-tls-secret
+  rules:
+  - host: "wisecow.local"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: wisecow-service
+            port:
+              number: 80
